@@ -61,6 +61,8 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
     // Unimos la data bonita de Prisma con la "distancia" que calculó PostGIS
     const result = stations.map((station) => {
       const geoData = nearbyIds.find((s) => s.id === station.id)
+      
+      console.log(JSON.stringify(geoData, null, 2))
       return {
         ...station,
         distance: geoData?.distance || 0 // Agregamos la propiedad distancia

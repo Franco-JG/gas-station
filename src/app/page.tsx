@@ -1,4 +1,4 @@
-import GasStationList from "@/components/GasStationList";
+import { StationList } from "@/components";
 
 export default function Home() {
   return (
@@ -6,7 +6,7 @@ export default function Home() {
       <h1 className="hidden text-6xl">
         Welcome to <span className="text-green-400">Gas Tracker</span>
       </h1>
-      <GasStationList />
+      <StationList />
     </div>
   );
 }
