@@ -43,3 +43,6 @@ next-env.d.ts
 
 # db volumes
 /postgres
+
+# prisma generated client
+/src/generated

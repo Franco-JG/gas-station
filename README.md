@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Configuración del proyecto
 
-## Getting Started
+### 1. Levantar la base de datos
 
-First, run the development server:
+Ejecuta el siguiente comando para iniciar la base de datos usando Docker Compose:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose up -d
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Esto levantará el contenedor de la base de datos en segundo plano.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Configurar Prisma
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Inicializa Prisma en el proyecto (si aún no existe la configuración):
 
-## Learn More
+```bash
+pnpm exec prisma init
+```
 
-To learn more about Next.js, take a look at the following resources:
+Esto creará los archivos de configuración y el archivo `schema.prisma`.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Luego, edita el archivo `.env` generado para asegurarte de que la variable `DATABASE_URL` apunte a tu base de datos local.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Continúa con la definición de tu modelo en `prisma/schema.prisma` y ejecuta las migraciones según sea necesario.
 
-## Deploy on Vercel
+### 3. Migraciones y generación de cliente
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Ejecuta los siguientes comandos para aplicar las migraciones y generar el cliente de Prisma:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+pnpm exec prisma reset
+pnpm exec prisma migrate dev --name init
+pnpm exec prisma generate
+```
+
+Esto reiniciará la base de datos, aplicará la migración inicial y generará el cliente de Prisma para tu proyecto.
+
+### 4. Ejecutar el seed de la base de datos
+
+Para poblar la base de datos con datos iniciales, ejecuta:
+
+```bash
+pnpm exec prisma db seed
+```
+
+Esto correrá el script de seed definido en `prisma/seed.ts`.
