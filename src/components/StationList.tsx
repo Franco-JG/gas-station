@@ -29,7 +29,7 @@ export function StationList() {
           const data = await getNearbyStations({
             lat: latitude,
             lng: longitude,
-            radiusKm: 5 // Buscamos a 5km a la redonda
+            radiusKm: 6 // Buscamos a 6km a la redonda
           })
 
           setStations(data)

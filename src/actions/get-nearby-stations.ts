@@ -34,7 +34,7 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
       FROM stations
       WHERE ST_DWithin(location, ST_MakePoint(${lng}, ${lat})::geography, ${radiusMeters})
       ORDER BY distance ASC
-      LIMIT 20;
+      LIMIT 100;
     `
 
     if (nearbyIds.length === 0) {
