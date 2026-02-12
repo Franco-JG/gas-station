@@ -1,11 +1,11 @@
 import { StationWithDistance } from '@/types'
 
-export const StationCard = ({ brand, name, prices, distance }: StationWithDistance) => {
+export const StationCard = ({ creId, name, prices, distance }: StationWithDistance) => {
   return (
     <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start mb-3">
         <div>
-          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{brand}</span>
+          <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">{creId}</span>
           <h3 className="font-bold text-lg text-gray-900 leading-tight">{name}</h3>
         </div>
         <div className="text-right">
