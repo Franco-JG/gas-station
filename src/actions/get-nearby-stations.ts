@@ -1,11 +1,10 @@
 'use server'
 import prisma from "@/lib/prisma"
 
-
 interface GetStationsProps {
   lat: number
   lng: number
-  radiusKm?: number // default 3
+  radiusKm?: number
 }
 
 export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsProps) {
@@ -15,13 +14,10 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
 
     console.log(`📍 Server Action: Buscando cerca de [${lat}, ${lng}] radio ${radiusKm}km`)
 
-    // 2. CONSULTA ESPACIAL (Raw SQL)
     // Obtenemos solo IDs y Distancia para ser eficientes.
     // ST_DistanceSphere: Distancia lineal en metros.
     // ST_DWithin: Filtro booleano "está dentro de".
-    // IMPORTANTE: El orden es (LONGITUD, LATITUD) -> (X, Y)
     
-    // Definimos el tipo del resultado raw
     type RawResult = {
       id: string
       distance: number
@@ -34,14 +30,13 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
       FROM stations
       WHERE ST_DWithin(location, ST_MakePoint(${lng}, ${lat})::geography, ${radiusMeters})
       ORDER BY distance ASC
-      LIMIT 100;
+      LIMIT 10;
     `
 
     if (nearbyIds.length === 0) {
       return []
     }
 
-    // 3. OBTENER DATOS RELACIONADOS (Prisma)
     // Usamos los IDs encontrados para traer la info completa (Marcas, Precios, etc.)
     const stations = await prisma.station.findMany({
       where: {
@@ -51,9 +46,6 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
       },
       include: {
         prices: true, // Join con precios
-        reviews: {    // (Opcional) Traer promedio de reviews si quisieras
-          select: { rating: true }
-        }
       }
     })
 
@@ -62,7 +54,7 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
     const result = stations.map((station) => {
       const geoData = nearbyIds.find((s) => s.id === station.id)
       
-      console.log(JSON.stringify(geoData, null, 2))
+      // console.log(JSON.stringify(geoData, null, 2))
       return {
         ...station,
         distance: geoData?.distance || 0 // Agregamos la propiedad distancia
