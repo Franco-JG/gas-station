@@ -1,6 +1,12 @@
-export function StationSkeleton() {
+type Props = {
+  items?: number;
+}
+
+export function StationSkeleton({ items = 1 }: Props) {
   return (
-    <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
+    <>
+    {Array.from({ length: items }).map((_, i) => (
+      <div key={i} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100">
       {/* Header: CreId + Nombre | Precio */}
       <div className="flex justify-between items-start mb-3">
         <div className="space-y-2">
@@ -28,5 +34,7 @@ export function StationSkeleton() {
         <div className="h-8 w-24 rounded-full animate-shimmer"></div>
       </div>
     </div>
+    ))}
+    </>
   );
 }

@@ -46,9 +46,9 @@ export function StationList() {
   }, [coords]);
 
   // CASO 1: Cargando (Ya sea GPS o Datos del Server) -> Mostramos Skeleton
-  if (geoLoading) {
+  if (geoLoading || dataLoading) {
     return (
-      <div className='p-4'>
+      <div className='space-y-4 p-4'>
         <div className="flex justify-between items-end px-1">
           <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
             Cerca de ti
@@ -57,12 +57,7 @@ export function StationList() {
             {stations.length} resultados
           </span>
         </div>
-        <div className="space-y-4">
-          {/* Mostramos 3 esqueletos para simular la lista */}
-          <StationSkeleton />
-          <StationSkeleton />
-          <StationSkeleton />
-        </div>
+        <StationSkeleton items={3} />
       </div>
     );
   }
@@ -74,7 +69,7 @@ export function StationList() {
 
   // CASO 3: Éxito -> Mostramos la lista real
   return (
-    <div className="space-y-4 p-4 pb-20">
+    <div className="space-y-4 p-4">
       {/* Header Informativo */}
       <div className="flex justify-between items-end px-1">
         <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider">
@@ -84,7 +79,6 @@ export function StationList() {
           {stations.length} resultados
         </span>
       </div>
-
       {stations.length === 0 ? (
         <div className="text-center py-10 text-gray-400">
           No hay gasolineras en este radio.
