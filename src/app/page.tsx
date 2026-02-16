@@ -1,6 +1,15 @@
+import { auth } from "@/auth";
 import { StationList } from "@/components";
+import Image from "next/image";
 
-export default function Home() {
+
+export default async function Home() {
+
+  const session = await auth();
+
+  const userName = session?.user?.name || "User"
+  const userImg = session?.user?.image || "/next.svg"
+
   return (
     <main className="min-h-screen bg-gray-50 max-w-md mx-auto shadow-2xl overflow-hidden relative">
       {/* Header Fijo */}
@@ -9,7 +18,15 @@ export default function Home() {
           Gas<span className="text-gray-800">Tracker</span>
         </h1>
         {/* Placeholder Avatar */}
-        <div className="w-8 h-8 bg-gray-100 rounded-full border border-gray-200"></div> 
+        {userImg ? (<Image
+          src={userImg}
+          alt={userName}
+          width={32}
+          height={32}
+          className="rounded-full"
+        /> ) : (<div className="w-8 h-8 bg-gray-100 rounded-full border border-gray-200">
+        </div>)}
+        
       </header>
 
       {/* El contenido lo maneja StationList */}

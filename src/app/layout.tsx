@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,11 +19,18 @@ export const metadata: Metadata = {
   description: "A simple app to track fuel prices.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  const session = await auth()
+    // [ ] Redirect to sign-in if not authenticated
+    if (!session?.user) {
+      redirect("/api/auth/signin")
+    }
+
   return (
     <html lang="en">
       <body
