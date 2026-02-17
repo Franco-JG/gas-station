@@ -1,6 +1,10 @@
 import { StationWithDistance } from '@/types'
 
-export const StationCard = ({ creId, name, prices, distance }: StationWithDistance) => {
+
+export const StationCard = ({ creId, name, prices, distance, lat, lng }: StationWithDistance) => {
+  
+  const routeUrl = "https://www.google.com/maps/dir/?api=1&destination="
+  
   return (
     <div className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start mb-3">
@@ -36,7 +40,9 @@ export const StationCard = ({ creId, name, prices, distance }: StationWithDistan
         <span className="text-sm text-gray-500 flex items-center gap-1">
           📍 {(distance / 1000).toFixed(1)} km
         </span>
-        <button className="px-4 py-1.5 bg-emerald-50 text-emerald-600 text-sm font-semibold rounded-full hover:bg-emerald-100 transition-colors">
+        <button 
+          onClick={() => window.open(`${routeUrl}${lat},${lng }`, '_blank')}
+          className="cursor-pointer px-4 py-1.5 bg-emerald-50 text-emerald-600 text-sm font-semibold rounded-full hover:bg-emerald-100 transition-colors">
           Ver Mapa
         </button>
       </div>

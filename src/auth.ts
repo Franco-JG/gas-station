@@ -1,4 +1,4 @@
-// import { PrismaAdapter } from "@auth/prisma-adapter"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import NextAuth from "next-auth"
 import { Provider } from "next-auth/providers"
 import Discord from "next-auth/providers/discord"
@@ -25,7 +25,7 @@ const providers: Provider[] = [
 ]
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  // adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma),
   providers,
 })
 

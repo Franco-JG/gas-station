@@ -40,3 +40,29 @@ body {
   background-size: 200% 100%;
   animation: shimmer 3s infinite;
 }
+
+@theme {
+  --color-primary-1: #13EC92;
+  --color-primary-2: #3AEFA4;
+  --color-primary-3: #62F2B6;
+  --color-primary-4: #89F6C9;
+  --color-primary-5: #B0F9DB;
+  --color-primary-6: #D8FCED;
+
+  --color-secondary-1: #FF5F5F;
+  --color-secondary-2: #FF7A7A;
+  --color-secondary-3: #FF9494;
+  --color-secondary-4: #FFAFAF;
+  --color-secondary-5: #FFCACA;
+  --color-secondary-6: #FFE4E4;
+
+  --color-tertiary-1: #1F2937;
+  --color-tertiary-2: #444D58;
+  --color-tertiary-3: #6A707A;
+  --color-tertiary-4: #8F949B;
+  --color-tertiary-5: #B4B8BC;
+  --color-tertiary-6: #DADBDE;
+
+  --color-title: var(--color-tertiary-1);
+  --color-subtitle: var(--color-tertiary-3);
+}
