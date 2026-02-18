@@ -1,5 +1,6 @@
-import { auth } from "@/auth";
 import Image from "next/image";
+import { auth, signOut } from "@/auth";
+import { LuSettings } from "react-icons/lu"
 
 export async function Header() {
 
@@ -9,20 +10,25 @@ export async function Header() {
   const userImg = session?.user?.image || "/next.svg"
 
   return (
-    <header className="bg-white p-4 sticky top-0 z-10 border-b border-gray-100 flex justify-between items-center shadow-sm">
-        <h1 className="text-xl font-black tracking-tight text-primary-1">
-          Gas<span className="text-title">Tracker</span>
-        </h1>
-        {/* Placeholder Avatar */}
-        {userImg ? (<Image
-          src={userImg}
-          alt={userName}
-          width={32}
-          height={32}
-          className="rounded-full"
-        /> ) : (<div className="w-8 h-8 bg-gray-100 rounded-full border border-gray-200">
-        </div>)}
-        
-      </header>
+    <header className="border-b border-b-primary-6 bg-white p-4 sticky inset-0 z-10 flex justify-between items-center">
+      {userImg ? (<Image
+        src={userImg}
+        alt={userName}
+        width={30}
+        height={30}
+        className="rounded-full"
+      />) : (<div className="w-8 h-8 bg-gray-100 rounded-full border border-gray-200">
+      </div>)}
+      <h1 className="text-xl font-bold text-primary-1">
+        <span className="text-title">Gas</span>México
+      </h1>
+      <LuSettings
+        onClick={async () => {
+          "use server"
+          await signOut()
+        }}
+        size={30}
+        className="text-primary-1 cursor-pointer" />
+    </header>
   )
 }
