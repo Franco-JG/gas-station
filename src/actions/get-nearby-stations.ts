@@ -1,5 +1,6 @@
 'use server'
 import prisma from "@/lib/prisma"
+import { StationWithDistance } from "@/types"
 
 interface GetStationsProps {
   lat: number
@@ -7,7 +8,7 @@ interface GetStationsProps {
   radiusKm?: number
 }
 
-export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsProps) {
+export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsProps): Promise<StationWithDistance[]> {
   try {
     // 1. Convertir radio a metros para PostGIS
     const radiusMeters = radiusKm * 1000
@@ -21,12 +22,16 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
     type RawResult = {
       id: string
       distance: number
+      lat: number
+      lng: number
     }
 
     const nearbyIds = await prisma.$queryRaw<RawResult[]>`
       SELECT 
         id, 
-        ST_DistanceSphere(location::geometry, ST_MakePoint(${lng}, ${lat})) as distance
+        ST_DistanceSphere(location::geometry, ST_MakePoint(${lng}, ${lat})) as distance,
+        ST_Y(location::geometry) as lat,
+        ST_X(location::geometry) as lng
       FROM stations
       WHERE ST_DWithin(location, ST_MakePoint(${lng}, ${lat})::geography, ${radiusMeters})
       ORDER BY distance ASC
@@ -57,7 +62,9 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
       // console.log(JSON.stringify(geoData, null, 2))
       return {
         ...station,
-        distance: geoData?.distance || 0 // Agregamos la propiedad distancia
+        distance: geoData?.distance || 0, // Agregamos la propiedad distancia
+        lat: geoData?.lat || 0,
+        lng: geoData?.lng || 0
       }
     })
 

@@ -3,9 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { getNearbyStations } from '@/actions/get-nearby-stations';
-import { StationSkeleton } from '@/components/common/StationSkeleton';
-import { PermissionBanner } from './PermissionBanner';
-import { StationCard } from './StationCard';
+import { StationSkeleton, PermissionBanner, StationCard } from '@/components';
 import { StationWithDistance } from '@/types';
 
 // Tipado rápido basado en tu respuesta de Prisma
