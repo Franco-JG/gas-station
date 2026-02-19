@@ -12,6 +12,7 @@ export async function Header() {
   return (
     <header className="border-b border-b-primary-6 bg-white p-4 sticky inset-0 z-10 flex justify-between items-center">
       {userImg ? (<Image
+        unoptimized
         src={userImg}
         alt={userName}
         width={30}
@@ -28,7 +29,7 @@ export async function Header() {
           await signOut()
         }}
         size={30}
-        className="text-primary-1 cursor-pointer" />
+        className="text-tertiary-1 cursor-pointer" />
     </header>
   )
 }

@@ -6,4 +6,5 @@ export type StationWithDistance = Station & {
   distance: number,
   lat: number,
   lng: number
+  isFavorited: boolean
 }

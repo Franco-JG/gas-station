@@ -1,9 +1,10 @@
-import { LuBuilding2, LuHeart, LuMap } from "react-icons/lu"
+import { LuBuilding2, LuMap } from "react-icons/lu"
 import { FaLocationArrow } from "react-icons/fa"
 import { StationWithDistance } from '@/types'
+import { FavoriteButton } from './FavoriteButton';
 
 
-export const StationCard = ({ name, prices, distance, lat, lng }: StationWithDistance) => {
+export const StationCard = ({ name, prices, distance, lat, lng, id, isFavorited }: StationWithDistance) => {
 
   const routeUrl = "https://www.google.com/maps/dir/?api=1&destination="
 
@@ -15,7 +16,7 @@ export const StationCard = ({ name, prices, distance, lat, lng }: StationWithDis
         <div className='flex flex-1 min-w-0 items-center gap-3'>
           {/* Placeholder para el logo o imagen de la estación */}
           <span className='shrink-0 w-12 h-12 bg-tertiary-6 ease-in rounded-sm flex items-center justify-center'>
-            <LuBuilding2 className="text-tertiary-1 text-lg" />
+            <LuBuilding2 className="text-tertiary-2 text-lg" />
           </span>
           {/* Nombre de la estación con efecto marquee*/}
           <div className="min-w-0 space-y-1">
@@ -35,7 +36,7 @@ export const StationCard = ({ name, prices, distance, lat, lng }: StationWithDis
             {distance && (
               <div className="flex items-center gap-1">
                 <FaLocationArrow className="text-subtitle w-2.5" />
-                <span className="text-subtitle text-xs">{(distance / 1000).toFixed(1)} km</span>
+                <span className="text-subtitle text-xs">a {(distance / 1000).toFixed(1)} km</span>
               </div>
             )
             }
@@ -69,17 +70,16 @@ export const StationCard = ({ name, prices, distance, lat, lng }: StationWithDis
       {/* Footer Card */}
       <div className="flex gap-2">
         <button
-          className="grow cursor-pointer bg-white border-2 border-primary-5 rounded-lg"
+          className="grow cursor-pointer bg-white border-2 border-primary-5 rounded-lg hover:bg-primary-6/50 transition-colors ease-out"
           onClick={() => window.open(`${routeUrl}${lat},${lng}`, '_blank')}
-          >
+        >
           <span className="flex gap-2 items-center justify-center">
             <LuMap className="text-primary-1" strokeWidth={2} size={16} />
             <span className="font-bold text-sm text-primary-1">Ver Mapa</span>
           </span>
         </button>
-        <span className="bg-gray rounded-lg p-2">
-          <LuHeart size={24} className="text-primary-1"/>
-        </span>
+        {/* toggle component */}
+        <FavoriteButton stationId={id} initialIsFavorited={isFavorited} />
       </div>
     </div>
   )
