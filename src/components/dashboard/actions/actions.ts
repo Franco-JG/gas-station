@@ -1,7 +1,7 @@
 'use server'
 import { auth } from "@/auth"
 import prisma from "@/lib/prisma"
-import { StationWithDistance } from "@/types"
+// import { StationWithDistance } from "@/types"
 
 interface GetStationsProps {
   lat: number
@@ -73,7 +73,7 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
         distance: geoData?.distance || 0, // Agregamos la propiedad distancia
         lat: geoData?.lat || 0,
         lng: geoData?.lng || 0,
-        isFavorited: station.favorites.length > 0 // Si hay registro en favorites, es favorito
+        isFavorited: station.favorites?.length > 0 // Si hay registro en favorites, es favorito
       }
     })
 

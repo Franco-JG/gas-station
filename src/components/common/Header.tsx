@@ -7,7 +7,7 @@ export async function Header() {
   const session = await auth();
 
   const userName = session?.user?.name || "User"
-  const userImg = session?.user?.image || "/next.svg"
+  const userImg = session?.user?.image
 
   return (
     <header className="border-b border-b-primary-6 bg-white p-4 sticky inset-0 z-10 flex justify-between items-center">

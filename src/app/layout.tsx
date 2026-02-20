@@ -21,16 +21,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const session = await auth()
-    // [ ] Redirect to sign-in if not authenticated
-    if (!session?.user) {
-      redirect("/api/auth/signin")
-    }
-
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased`}
+        className={`${inter.className} antialiased `}
       >
         {children}
       </body>
