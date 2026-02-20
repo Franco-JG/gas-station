@@ -1,4 +1,5 @@
 'use server'
+import { auth } from "@/auth"
 import prisma from "@/lib/prisma"
 import { StationWithDistance } from "@/types"
 
@@ -8,8 +9,11 @@ interface GetStationsProps {
   radiusKm?: number
 }
 
-export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsProps): Promise<StationWithDistance[]> {
+export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsProps) {
   try {
+
+    const session = await auth();
+    const currentUserId = session?.user?.id
     // 1. Convertir radio a metros para PostGIS
     const radiusMeters = radiusKm * 1000
 
@@ -50,12 +54,16 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
         }
       },
       include: {
-        prices: true, // Join con precios
+        prices: true,
+        favorites: currentUserId ? {
+          where: { userId: currentUserId },
+          select: { id: true } // Solo necesitamos saber si existe
+        } : false
       }
     })
 
     // 4. MEZCLAR RESULTADOS (Merge)
-    // Unimos la data bonita de Prisma con la "distancia" que calculó PostGIS
+    // Unimos la data de Prisma con la "distancia" que calculó PostGIS
     const result = stations.map((station) => {
       const geoData = nearbyIds.find((s) => s.id === station.id)
       
@@ -64,7 +72,8 @@ export async function getNearbyStations({ lat, lng, radiusKm = 3 }: GetStationsP
         ...station,
         distance: geoData?.distance || 0, // Agregamos la propiedad distancia
         lat: geoData?.lat || 0,
-        lng: geoData?.lng || 0
+        lng: geoData?.lng || 0,
+        isFavorited: station.favorites.length > 0 // Si hay registro en favorites, es favorito
       }
     })
 
