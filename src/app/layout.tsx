@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+import { Toaster } from "sileo"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -27,6 +26,18 @@ export default async function RootLayout({
         className={`${inter.className} antialiased `}
       >
         {children}
+        <Toaster
+          position="top-center"
+          options={{
+            styles: { description: "text-tertiary-6" },
+            fill: "#171717",
+            autopilot: {
+              expand: 500,
+              collapse: 3500,
+            },
+            duration: 4000,
+          }}
+        />
       </body>
     </html>
   );

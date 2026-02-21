@@ -7,6 +7,7 @@ import { signIn } from "next-auth/react"
 import { LuMail, LuLock, LuEye, LuEyeOff } from "react-icons/lu"
 import { FaGasPump } from "react-icons/fa6";
 import { FaGithub, FaGoogle } from "react-icons/fa"
+import { sileo } from "sileo"
 
 interface Props {
   onToggle: () => void
@@ -18,13 +19,11 @@ export const LoginView = ({ onToggle }: Props) => {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError("")
     setLoading(true)
-
     try {
       const result = await signIn("credentials", {
         email,
@@ -34,9 +33,10 @@ export const LoginView = ({ onToggle }: Props) => {
 
       if (result?.error) {
         setError("Credenciales inválidas")
-      } else {
-        router.push("/")
-        router.refresh()
+        sileo.error({
+          title: "Error",
+          description: error
+        })
       }
     } catch (error) {
       setError("Error al iniciar sesión: " + error)
@@ -64,11 +64,11 @@ export const LoginView = ({ onToggle }: Props) => {
 
       {/* Form */}
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {error && (
+        {/* {error && (
           <div className="bg-secondary-6 border border-secondary-3 text-secondary-1 px-4 py-2 rounded-lg text-sm">
             {error}
           </div>
-        )}
+        )} */}
 
         {/* Email Input */}
         <div className="space-y-1.5">

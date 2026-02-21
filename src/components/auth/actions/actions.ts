@@ -51,8 +51,8 @@ export async function registerUser(
   name: string
 ): Promise<{ success: boolean; error?: string; userId?: string }> {
 
-    const avatarUrl = "https://api.dicebear.com/9.x/lorelei/svg?seed="
-  
+  const avatarUrl = "https://api.dicebear.com/9.x/lorelei/svg?seed="
+
   if (!email || !password || !name) {
     return { success: false, error: "Todos los campos son requeridos" }
   }
@@ -76,16 +76,16 @@ export async function registerUser(
 
     const user = await prisma.user.create({
       data: {
-        name,
-        email,
+        name: name.trim(),
+        email: email,
         password: hashedPassword,
-        image: `${avatarUrl}${name}`
+        image: `${avatarUrl}${name.trim()}`,
       },
     })
 
     console.log(red(`New user created with id: ${user.id}`))
     return { success: true, userId: user.id }
-    
+
   } catch (error) {
     console.error("Error registering user:", error)
     return { success: false, error: "Error al crear la cuenta" }

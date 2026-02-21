@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
 import { LuMail, LuLock, LuEye, LuEyeOff, LuUser } from "react-icons/lu"
-// import { FaGithub, FaGoogle } from "react-icons/fa"
 import { registerUser } from "./actions/actions"
 import { FaGasPump } from "react-icons/fa"
+import { sileo } from "sileo"
+import { useRouter } from "next/navigation"
 
 interface Props {
   onToggle: () => void
@@ -20,56 +20,68 @@ export const SignUpView = ({ onToggle }: Props) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
-  const router = useRouter()
+  const router = useRouter();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setError("")
 
-    if (!name.trim()) {
-      setError("El nombre es requerido")
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault()
+  setLoading(true)
+
+  let errorMessage = ""
+
+  try {
+
+    if(!email || !password || !name.trim()) {
+      errorMessage = "Todos los campos son obligatorios"
+      return
+    }
+
+    if (password.length === 0 || confirmPassword.length === 0) {
+      errorMessage = "La contraseña no puede estar vacía"
       return
     }
 
     if (password !== confirmPassword) {
-      setError("Las contraseñas no coinciden")
+      errorMessage = "Las contraseñas no coinciden"
       return
     }
 
-    setLoading(true)
+    const result = await registerUser(email, password, name)
 
-    try {
-      const result = await registerUser(email, password, name)
+    if (!result.success) {
+      errorMessage = result.error || "Error al crear la cuenta"
+      return
+    }
 
-      if (!result.success) {
-        setError(result.error || "Error al crear la cuenta")
-        return
-      }
+    const signInResult = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    })
 
-      const signInResult = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      })
-
-      if (signInResult?.error) {
-        setError("Cuenta creada, pero hubo un error al iniciar sesión")
-      } else {
+    if (signInResult?.error) {
+      errorMessage = "Cuenta creada, pero hubo un error al iniciar sesión"
+    }
+    else {
         router.push("/")
         router.refresh()
+        return
       }
-    } catch {
-      setError("Ocurrió un error al crear la cuenta")
-    } finally {
-      setLoading(false)
+  } catch (error) {
+    console.log("Error during registration:", error)
+    errorMessage = "Ocurrió un error al crear la cuenta"
+  } finally {
+    setLoading(false)
+
+    if (errorMessage) {
+      sileo.error({
+        title: "Error",
+        description: errorMessage,
+      })
     }
   }
-
-  // const handleSocialLogin = (provider: "google" | "github") => {
-  //   signIn(provider, { redirect: true, callbackUrl: "/" })
-  // }
+}
 
   return (
     <>
@@ -86,12 +98,6 @@ export const SignUpView = ({ onToggle }: Props) => {
 
       {/* Form */}
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {error && (
-          <div className="bg-secondary-6 border border-secondary-3 text-secondary-1 px-4 py-2 rounded-lg text-sm">
-            {error}
-          </div>
-        )}
-
         {/* Name Input */}
         <div className="space-y-1.5">
           <label className="block text-sm font-semibold text-title ml-1">Nombre</label>
