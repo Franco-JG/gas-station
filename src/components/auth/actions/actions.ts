@@ -3,53 +3,91 @@
 import prisma from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 
-const red = (text: string) => `\x1b[31m${text}\x1b[0m`;
+const red = (text: string) => `\x1b[31m${text}\x1b[0m`
 
-export async function signInCredentials(email: string, password: string){
-  
-  if(!email || !password ){
+/**
+ * Autenticar usuario existente (para login)
+ */
+export async function signInCredentials(email: string, password: string) {
+  if (!email || !password) {
     console.log(red("Missing email or password"))
-    return null;
+    return null
   }
-  
+
   const existingUser = await prisma.user.findUnique({
     where: { email },
   })
 
-  if(!existingUser){
-    console.log(red("User not found, creating new user"))
-    console.log(red(`Email: ${email}, Password: ${password}`))
+  if (!existingUser) {
+    console.log(red("User not found"))
+    return null
+  }
 
-    const newUser = await registerUser(email, password)
-    console.log(red(`New user created with id: ${newUser.id}`))
-    return newUser
+  if (!existingUser.password) {
+    console.log(red("User registered with OAuth, no password"))
+    return null
   }
 
   const isPasswordValid = await bcrypt.compare(
-    password, existingUser.password as string
+    password,
+    existingUser.password
   )
 
-  if(!isPasswordValid){
+  if (!isPasswordValid) {
     console.log(red("Invalid password"))
-    return null;
+    return null
   }
 
   console.log(red(`User ${existingUser.email} authenticated successfully`))
   return existingUser
-  
 }
 
-async function registerUser(email: string, password: string, name?: string) {
+/**
+ * Registrar nuevo usuario (para signup)
+ */
+export async function registerUser(
+  email: string,
+  password: string,
+  name: string
+): Promise<{ success: boolean; error?: string; userId?: string }> {
+
+    const avatarUrl = "https://api.dicebear.com/9.x/lorelei/svg?seed="
   
-  const hashedPassword = await bcrypt.hash(password, 10)
+  if (!email || !password || !name) {
+    return { success: false, error: "Todos los campos son requeridos" }
+  }
 
-  const user = await prisma.user.create({
-    data: {
-      name: name || "Temporary User",
-      email: email,
-      password: hashedPassword,
-    },
-  })
+  if (password.length < 6) {
+    return { success: false, error: "La contraseña debe tener al menos 6 caracteres" }
+  }
 
-  return user
+  try {
+    // Verificar si el usuario ya existe
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    })
+
+    if (existingUser) {
+      return { success: false, error: "El email ya está registrado" }
+    }
+
+    // Crear usuario
+    const hashedPassword = await bcrypt.hash(password, 10)
+
+    const user = await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+        image: `${avatarUrl}${name}`
+      },
+    })
+
+    console.log(red(`New user created with id: ${user.id}`))
+    return { success: true, userId: user.id }
+    
+  } catch (error) {
+    console.error("Error registering user:", error)
+    return { success: false, error: "Error al crear la cuenta" }
+  }
 }

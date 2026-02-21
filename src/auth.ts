@@ -57,13 +57,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   },
   pages: {
     signIn: "/login",
-  }
+  },
+  logger: {
+    error: (code) => {
+      // Silenciar errores de CredentialsSignin (login fallido esperado)
+      if (code.name === "CredentialsSignin") return
+      console.error(code)
+    },
+    warn: (code) => {
+      console.warn(code)
+    },
+    debug: (code, metadata) => {
+      console.debug(code, metadata)
+    },
+  },
 })
-
-// export const providerMap = providers.map((provider) => {
-//   if (typeof provider === "function") {
-//     const providerData = provider()
-//     return { id: providerData.id, name: providerData.name }
-//   }
-//   return { id: provider.id, name: provider.name }
-// })

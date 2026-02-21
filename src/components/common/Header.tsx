@@ -14,7 +14,7 @@ export async function Header() {
       {userImg ? (<Image
         unoptimized
         src={userImg}
-        alt={userName}
+        alt={userName+" avatar"}
         width={30}
         height={30}
         className="rounded-full"
