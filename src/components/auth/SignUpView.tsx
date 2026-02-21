@@ -3,11 +3,16 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
-import { LuMail, LuLock, LuEye, LuEyeOff, LuFuel, LuUser } from "react-icons/lu"
-import { FaGithub, FaGoogle } from "react-icons/fa"
+import { LuMail, LuLock, LuEye, LuEyeOff, LuUser } from "react-icons/lu"
+// import { FaGithub, FaGoogle } from "react-icons/fa"
 import { registerUser } from "./actions/actions"
+import { FaGasPump } from "react-icons/fa"
 
-export const SignUpView = () => {
+interface Props {
+  onToggle: () => void
+}
+
+export const SignUpView = ({ onToggle }: Props) => {
 
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
@@ -62,25 +67,27 @@ export const SignUpView = () => {
     }
   }
 
-  const handleSocialLogin = (provider: "google" | "github") => {
-    signIn(provider, { redirect: true, callbackUrl: "/" })
-  }
+  // const handleSocialLogin = (provider: "google" | "github") => {
+  //   signIn(provider, { redirect: true, callbackUrl: "/" })
+  // }
 
   return (
     <>
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary-1/10 text-primary-1 mb-2 border border-primary-1/20 shadow-sm">
-          <LuFuel size={28} />
+        <div className="flex justify-center items-center gap-4">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary-1/10 text-primary-1 border border-primary-1/20 shadow-sm">
+            <FaGasPump size={28} />
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-title">Gas México</h1>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-title">Gas México</h1>
-        <p className="text-sm text-slate-500">Crea tu cuenta para comenzar.</p>
+        <p className="text-xs text-tertiary-4">Crea tu cuenta para comenzar.</p>
       </div>
 
       {/* Form */}
       <form className="space-y-4" onSubmit={handleSubmit}>
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg text-sm">
+          <div className="bg-secondary-6 border border-secondary-3 text-secondary-1 px-4 py-2 rounded-lg text-sm">
             {error}
           </div>
         )}
@@ -169,35 +176,12 @@ export const SignUpView = () => {
         </button>
       </form>
 
-      {/* Divider */}
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-slate-200" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white/50 backdrop-blur-sm px-2 text-slate-400 rounded-lg">
-            O regístrate con
-          </span>
-        </div>
-      </div>
-
-      {/* Social Buttons */}
-      <div className="grid grid-cols-2 gap-3">
+      <div className="flex justify-center">
+        <span className="text-tertiary-4 text-xs">¿Ya tienes cuenta?</span>
         <button
-          onClick={() => handleSocialLogin("google")}
-          type="button"
-          className="bg-white/60 backdrop-blur-sm border border-white/80 hover:bg-white/80 flex items-center justify-center gap-2 h-11 rounded-lg text-sm font-semibold shadow-sm transition-all cursor-pointer"
-        >
-          <FaGoogle className="w-5 h-5 text-slate-700" />
-          Google
-        </button>
-        <button
-          onClick={() => handleSocialLogin("github")}
-          type="button"
-          className="bg-white/60 backdrop-blur-sm border border-white/80 hover:bg-white/80 flex items-center justify-center gap-2 h-11 rounded-lg text-sm font-semibold shadow-sm transition-all cursor-pointer"
-        >
-          <FaGithub className="w-5 h-5 text-slate-700" />
-          GitHub
+          onClick={onToggle}
+          className="text-primary-1 text-xs font-bold hover:underline ml-1">
+          Inicia sesión aquí
         </button>
       </div>
     </>

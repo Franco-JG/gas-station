@@ -4,10 +4,17 @@ import { useState } from "react"
 import { LoginView } from "@/components/auth/LoginView"
 import { SignUpView } from "@/components/auth/SignUpView"
 
-type AuthMode = "login" | "signup"
-
 export default function LoginPage() {
-  const [mode, setMode] = useState<AuthMode>("login")
+  const [isLogin, setIsLogin] = useState(true)
+  const [isAnimating, setIsAnimating] = useState(false)
+
+  const handleToggle = () => {
+    setIsAnimating(true)
+    setTimeout(() => {
+      setIsLogin(!isLogin)
+      setTimeout(() => setIsAnimating(false), 50)
+    }, 200)
+  }
 
   return (
     <div className="bg-gray-50 text-slate-900 antialiased min-h-screen flex items-center justify-center overflow-hidden relative">
@@ -18,35 +25,20 @@ export default function LoginPage() {
 
       {/* Main Content */}
       <main className="relative z-10 w-full max-w-md p-4 flex flex-col items-center justify-center min-h-screen sm:min-h-0">
-        <div className="w-full rounded-2xl p-6 sm:p-8 flex flex-col gap-6 bg-white/70 backdrop-blur-xl ring-1 ring-white/60 shadow-xl">
-          {/* Toggle Tabs */}
-          <div className="flex bg-white/60 backdrop-blur-sm border border-white/80 rounded-lg p-1">
-            <button
-              type="button"
-              onClick={() => setMode("login")}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-semibold transition-all cursor-pointer ${
-                mode === "login"
-                  ? "bg-primary-1 text-emerald-950 shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              Iniciar Sesión
-            </button>
-            <button
-              type="button"
-              onClick={() => setMode("signup")}
-              className={`flex-1 py-2 px-4 rounded-md text-sm font-semibold transition-all cursor-pointer ${
-                mode === "signup"
-                  ? "bg-primary-1 text-emerald-950 shadow-sm"
-                  : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              Registrarse
-            </button>
+        <div className="w-full rounded-2xl p-6 sm:p-8 flex flex-col bg-white/70 backdrop-blur-xl ring-1 ring-white/60 shadow-xl">
+          <div
+            className={`transition-all duration-200 ease-in-out space-y-6 ${
+              isAnimating 
+                ? "opacity-0 scale-95" 
+                : "opacity-100 scale-100"
+            }`}
+          >
+            {isLogin ? (
+              <LoginView onToggle={handleToggle} />
+            ) : (
+              <SignUpView onToggle={handleToggle} />
+            )}
           </div>
-
-          {/* Conditional Render */}
-          {mode === "login" ? <LoginView /> : <SignUpView />}
         </div>
       </main>
     </div>

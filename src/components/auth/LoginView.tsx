@@ -4,10 +4,15 @@ import { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
-import { LuMail, LuLock, LuEye, LuEyeOff, LuFuel } from "react-icons/lu"
+import { LuMail, LuLock, LuEye, LuEyeOff } from "react-icons/lu"
+import { FaGasPump } from "react-icons/fa6";
 import { FaGithub, FaGoogle } from "react-icons/fa"
 
-export const LoginView = () => {
+interface Props {
+  onToggle: () => void
+}
+
+export const LoginView = ({ onToggle }: Props) => {
   const [showPassword, setShowPassword] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -48,17 +53,19 @@ export const LoginView = () => {
     <>
       {/* Header */}
       <div className="text-center space-y-2">
-        <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary-1/10 text-primary-1 mb-2 border border-primary-1/20 shadow-sm">
-          <LuFuel size={28} />
+        <div className="flex justify-center items-center gap-4">
+          <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary-1/10 text-primary-1 border border-primary-1/20 shadow-sm">
+            <FaGasPump size={28} />
+          </div>
+          <h1 className="text-2xl font-bold tracking-tight text-title">Gas México</h1>
         </div>
-        <h1 className="text-2xl font-bold tracking-tight text-title">Gas México</h1>
-        <p className="text-sm text-slate-500">Inicia sesión en tu cuenta.</p>
+        <p className="text-xs text-tertiary-4">Inicia sesión en tu cuenta.</p>
       </div>
 
       {/* Form */}
       <form className="space-y-4" onSubmit={handleSubmit}>
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded-lg text-sm">
+          <div className="bg-secondary-6 border border-secondary-3 text-secondary-1 px-4 py-2 rounded-lg text-sm">
             {error}
           </div>
         )}
@@ -72,7 +79,7 @@ export const LoginView = () => {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="bg-transparent border-none text-title placeholder-slate-400 text-sm w-full focus:outline-none"
+              className="bg-transparent border-none text-title placeholder-tertiary-4 text-sm w-full focus:outline-none"
               placeholder="user@example.com"
             />
           </div>
@@ -82,7 +89,7 @@ export const LoginView = () => {
         <div className="space-y-1.5">
           <div className="flex items-center justify-between ml-1 mr-1">
             <label className="block text-sm font-semibold text-title">Contraseña</label>
-            <Link href="/forgot-password" className="text-xs text-primary-1 font-semibold hover:underline">
+            <Link href="#" className="text-xs text-primary-1 font-semibold hover:underline">
               ¿Olvidaste tu contraseña?
             </Link>
           </div>
@@ -92,7 +99,7 @@ export const LoginView = () => {
               type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="bg-transparent border-none text-title placeholder-slate-400 text-sm w-full focus:outline-none"
+              className="bg-transparent border-none text-title placeholder-tertiary-4 text-sm w-full focus:outline-none"
               placeholder="••••••••"
             />
             <button
@@ -121,7 +128,7 @@ export const LoginView = () => {
           <div className="w-full border-t border-slate-200" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white/50 backdrop-blur-sm px-2 text-slate-400 rounded-lg">
+          <span className="bg-white/50 backdrop-blur-sm px-2 text-tertiary-4 rounded-lg">
             O ingresa con
           </span>
         </div>
@@ -144,6 +151,15 @@ export const LoginView = () => {
         >
           <FaGithub className="w-5 h-5 text-slate-700" />
           GitHub
+        </button>
+      </div>
+
+      <div className="flex justify-center">
+        <span className="text-tertiary-4 text-xs">¿Aun no tienes cuenta?</span>
+        <button
+          onClick={onToggle}
+          className="text-primary-1 text-xs font-bold hover:underline ml-1">
+          Regístrate aquí
         </button>
       </div>
     </>

@@ -64,11 +64,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (code.name === "CredentialsSignin") return
       console.error(code)
     },
-    warn: (code) => {
-      console.warn(code)
-    },
-    debug: (code, metadata) => {
-      console.debug(code, metadata)
-    },
+    // warn: (code) => {
+    //   console.warn(code)
+    // },
+    // debug: (code, metadata) => {
+    //   console.debug(code, metadata)
+    // },
   },
 })
