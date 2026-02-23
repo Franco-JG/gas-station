@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { auth } from "@/auth";
-import { redirect } from "next/navigation";
+import { Toaster } from "sileo"
 
 const inter = Inter({
   variable: "--font-inter",
@@ -21,18 +20,24 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
-  const session = await auth()
-    // [ ] Redirect to sign-in if not authenticated
-    if (!session?.user) {
-      redirect("/api/auth/signin")
-    }
-
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased`}
+        className={`${inter.className} antialiased `}
       >
         {children}
+        <Toaster
+          position="top-center"
+          options={{
+            styles: { description: "text-tertiary-6" },
+            fill: "#171717",
+            autopilot: {
+              expand: 500,
+              collapse: 3500,
+            },
+            duration: 4000,
+          }}
+        />
       </body>
     </html>
   );
