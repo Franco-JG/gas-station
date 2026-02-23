@@ -8,16 +8,8 @@ import prisma from "./lib/prisma"
 import { signInCredentials } from "./components/auth/actions/actions"
 
 const providers: Provider[] = [
-  GitHub({
-    clientId: process.env.AUTH_GITHUB_ID || "",
-    clientSecret: process.env.AUTH_GITHUB_SECRET || "",
-  }),
-  Google(
-    {
-      clientId: process.env.AUTH_GOOGLE_ID || "",
-      clientSecret: process.env.AUTH_GOOGLE_SECRET || "",
-    }
-  ),
+  GitHub,
+  Google,
   Credentials({
     name: "credentials",
     credentials: {
@@ -58,18 +50,22 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   pages: {
     signIn: "/login",
   },
+  events: {
+    signIn: ({ user }) => {
+      console.log(`✅ Usuario conectado: ${user.email}`)
+    },
+    signOut: (message) => {
+      if ("token" in message && message.token) {
+        console.log(`👋 Usuario desconectado: ${message.token.email}`)
+      }
+    },
+  },
   logger: {
     error: (code) => {
       // Silenciar errores de CredentialsSignin (login fallido esperado)
       if (code.name === "CredentialsSignin") return
       console.error(code)
-    },
-    // warn: (code) => {
-    //   console.warn(code)
-    // },
-    // debug: (code, metadata) => {
-    //   console.debug(code, metadata)
-    // },
+    }
   },
   trustHost: true,
 })

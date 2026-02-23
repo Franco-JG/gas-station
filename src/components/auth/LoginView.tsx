@@ -19,6 +19,7 @@ export const LoginView = ({ onToggle }: Props) => {
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -37,6 +38,9 @@ export const LoginView = ({ onToggle }: Props) => {
           title: "Error",
           description: error
         })
+      }else{
+        router.push("/")
+        // router.refresh()
       }
     } catch (error) {
       setError("Error al iniciar sesión: " + error)

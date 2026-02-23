@@ -65,7 +65,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     }
     else {
         router.push("/")
-        router.refresh()
+        // router.refresh()
         return
       }
   } catch (error) {
