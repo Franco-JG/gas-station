@@ -1,6 +1,6 @@
 "use server"
 
-import { auth } from "@/auth"
+import { auth } from "@/lib/auth"
 import { stationService } from "@/services/station.service"
 import type { StationWithDistance } from "@/types"
 

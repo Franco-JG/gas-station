@@ -34,9 +34,9 @@ export default function LoginPage() {
             }`}
           >
             {isLogin ? (
-              <LoginView onToggle={handleToggle} />
+              <LoginView key="login" onToggle={handleToggle} />
             ) : (
-              <SignUpView onToggle={handleToggle} />
+              <SignUpView key="signup" onToggle={handleToggle} />
             )}
           </div>
         </div>

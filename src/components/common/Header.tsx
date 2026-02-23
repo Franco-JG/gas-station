@@ -1,6 +1,6 @@
 import Image from "next/image";
-import { auth, signOut } from "@/auth";
-import { LuSettings } from "react-icons/lu"
+import { auth, signOut } from "@/lib/auth";
+import { LuSettings2 } from "react-icons/lu"
 
 export async function Header() {
 
@@ -11,19 +11,19 @@ export async function Header() {
 
   return (
     <header className="border-b border-b-primary-6 bg-white p-4 sticky inset-0 z-10 flex justify-between items-center">
-      {userImg ? (<Image
+      {(userImg ) ? (<Image
         unoptimized
         src={userImg}
         alt={userName+" avatar"}
-        width={30}
-        height={30}
-        className="rounded-full"
+        width={32}
+        height={32}
+        className="rounded-full max-h-8"
       />) : (<div className="w-8 h-8 bg-gray-100 rounded-full border border-gray-200">
       </div>)}
       <h1 className="text-xl font-bold text-primary-1">
         <span className="text-title">Gas</span>México
       </h1>
-      <LuSettings
+      <LuSettings2
         onClick={async () => {
           "use server"
           await signOut()

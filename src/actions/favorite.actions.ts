@@ -1,6 +1,6 @@
 "use server"
 
-import { auth } from "@/auth"
+import { auth } from "@/lib/auth"
 import { favoriteService } from "@/services/favorite.service"
 import { revalidatePath } from "next/cache"
 import type { ActionResult } from "@/types"

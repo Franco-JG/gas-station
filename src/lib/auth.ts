@@ -4,8 +4,9 @@ import { Provider } from "next-auth/providers"
 import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import Credentials from "next-auth/providers/credentials"
-import prisma from "./lib/prisma"
-import { signInCredentials } from "./components/auth/actions/actions"
+import prisma from "./prisma"
+import { signInCredentials } from "@/actions"
+
 
 const providers: Provider[] = [
   GitHub,
