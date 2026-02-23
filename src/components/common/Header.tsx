@@ -6,7 +6,7 @@ export async function Header() {
 
   const session = await auth();
 
-  const userName = session?.user?.name || "User"
+  const userName = session?.user?.name
   const userImg = session?.user?.image
 
   return (
