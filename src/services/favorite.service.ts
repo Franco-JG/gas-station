@@ -2,6 +2,9 @@ import prisma from "@/lib/prisma"
 
 export const favoriteService = {
   async toggle(userId: string, stationId: string) {
+    //add custom sleep
+    // await new Promise((resolve) => setTimeout(resolve, 5000));
+
     const existing = await prisma.favorite.findUnique({
       where: { userId_stationId: { userId, stationId } },
     })

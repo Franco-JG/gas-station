@@ -4,10 +4,14 @@ import { useState, useEffect } from 'react';
 import { useGeolocation } from '@/hooks/useGeolocation';
 import { getNearbyStations } from '@/actions';
 import { StationSkeleton, PermissionBanner } from '@/components';
-import { StationCard } from "@/components/station/StationCard"
+import { StationCard } from "@/components/station/StationCard";
 import type { StationWithDistance } from '@/types';
 
-export const StationList = () => {
+interface StationListProps {
+  radiusKm: number;
+}
+
+export const StationList = ({ radiusKm }: StationListProps) => {
   const { coords, loading: geoLoading, error: geoError, requestLocation } = useGeolocation();
   const [stations, setStations] = useState<StationWithDistance[]>([]);
   const [loading, setLoading] = useState(true);
@@ -15,19 +19,19 @@ export const StationList = () => {
   useEffect(() => {
     if (!coords) return;
 
-    const fetchStations = async () => {
+    const fetchStations = async (radius: number) => {
       setLoading(true);
       const data = await getNearbyStations({
         lat: coords.lat,
         lng: coords.lng,
-        radiusKm: 3,
+        radiusKm: radius,
       });
       setStations(data);
       setLoading(false);
     };
 
-    fetchStations();
-  }, [coords]);
+    fetchStations(radiusKm);
+  }, [coords, radiusKm]);
 
   // Cargando ubicación o estaciones
   if (geoLoading || loading) {

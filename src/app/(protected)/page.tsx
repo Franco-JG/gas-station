@@ -1,5 +1,5 @@
-import { StationList } from "@/components";
 import { Header } from "@/components/common/Header";
+import { DashboardContent } from "@/components";
 
 export default async function Home() {
 
@@ -7,8 +7,8 @@ export default async function Home() {
     <main className="min-h-screen bg-gray-50 shadow-2xl relative pb-40">
       {/* Header Fijo */}
       <Header />
-      {/* El contenido lo maneja StationList */}
-      <StationList />
+      {/* El contenido (lista + filtros) lo maneja DashboardContent */}
+      <DashboardContent />
     </main>
   );
 }
