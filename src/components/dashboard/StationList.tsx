@@ -28,6 +28,7 @@ export const StationList = ({ radiusKm }: StationListProps) => {
       });
       setStations(data);
       setLoading(false);
+      console.log("Estaciones: "+data.length)
     };
 
     fetchStations(radiusKm);

@@ -11,7 +11,7 @@ interface FilterSheetProps {
   defaultRadiusKm?: number;
 }
 
-export function FilterSheet({ isOpen, currentRadiusKm, minRadiusKm = 0, maxRadiusKm = 20, onClose, onApply, defaultRadiusKm = 3, onChangeRadiusKm }: FilterSheetProps) {
+export function FilterSheet({ isOpen, currentRadiusKm, minRadiusKm = 1, maxRadiusKm = 10, onClose, onApply, defaultRadiusKm = 3, onChangeRadiusKm }: FilterSheetProps) {
   
   const handleApply = () => {
     onApply(currentRadiusKm);
@@ -43,6 +43,10 @@ export function FilterSheet({ isOpen, currentRadiusKm, minRadiusKm = 0, maxRadiu
           {/* Handle superior */}
           <div className="flex justify-center mb-4">
             <div className="w-16 h-1.5 rounded-full bg-gray-200" />
+          </div>
+          <div>
+            {/*TODO imprimir objeto con todos los props y su valor */}
+            <pre className="text-xs text-gray-500">{JSON.stringify({ isOpen, currentRadiusKm, minRadiusKm, maxRadiusKm, defaultRadiusKm }, null, 2)}</pre>  
           </div>
 
           {/* Título y limpiar */}
@@ -78,6 +82,18 @@ export function FilterSheet({ isOpen, currentRadiusKm, minRadiusKm = 0, maxRadiu
                 step={1}
                 value={currentRadiusKm}
                 onChange={(e) => onChangeRadiusKm(Number(e.target.value))}
+                className="w-full accent-tertiary-1"
+              />
+              <div className="flex justify-between text-xs text-gray-400 mt-1">
+                <span>{minRadiusKm} km</span>
+                <span>{maxRadiusKm} km</span>
+              </div>
+            </div>
+            <div className="mt-2">
+              <input
+                type="range"
+                min={1}
+                max={20}
                 className="w-full accent-tertiary-1"
               />
               <div className="flex justify-between text-xs text-gray-400 mt-1">

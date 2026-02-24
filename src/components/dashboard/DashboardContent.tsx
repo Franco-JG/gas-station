@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { StationList, FilterSheet } from "@/components";
+import { Header } from "@/components/common/Header";
 
 const DEFAULT_RADIUS_KM = 3;
 
@@ -26,28 +27,19 @@ export function DashboardContent() {
 
   return (
     <>
-      {/* Botón para abrir filtros */}
-      <div className="px-4 pt-4 flex justify-end">
-        <button
-          type="button"
-          onClick={openFilters}
-          className="flex items-center gap-2 rounded-full border border-primary-6 bg-white px-4 py-2 text-sm font-medium text-primary-1 shadow-sm"
-        >
-          Filtros
-        </button>
-      </div>
+      <Header onOpenFilters={openFilters} />
 
       <StationList radiusKm={radiusKm} />
 
       <FilterSheet
         isOpen={isFilterOpen}
-          currentRadiusKm={draftRadiusKm}
+        currentRadiusKm={draftRadiusKm}
         minRadiusKm={1}
         maxRadiusKm={20}
         defaultRadiusKm={DEFAULT_RADIUS_KM}
         onClose={closeFilters}
         onApply={handleApplyFilters}
-          onChangeRadiusKm={setDraftRadiusKm}
+        onChangeRadiusKm={setDraftRadiusKm}
       />
     </>
   );
