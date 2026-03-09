@@ -5,13 +5,14 @@ import Image from "next/image";
 import { LuSettings, LuBadgeInfo, LuLogOut } from "react-icons/lu";
 
 interface ProfilePopupProps {
+  isOpen: boolean;
   onClose: () => void;
   userName?: string | null;
   userEmail?: string | null;
   userImg?: string | null;
 }
 
-const ProfilePopup = ({ onClose, userName, userEmail, userImg }: ProfilePopupProps) => {
+const ProfilePopup = ({ isOpen, onClose, userName, userEmail, userImg }: ProfilePopupProps) => {
   const initials =
     userName
       ?.split(" ")
@@ -20,18 +21,27 @@ const ProfilePopup = ({ onClose, userName, userEmail, userImg }: ProfilePopupPro
       .toUpperCase() || "JP";
 
   return (
-    <div className="fixed inset-0 z-40 flex items-start justify-center max-w-md mx-auto">
+    <div
+      className={`fixed inset-0 z-40 flex items-start justify-center max-w-md mx-auto transition-all ${
+        isOpen ? "pointer-events-auto" : "pointer-events-none"
+      }`}
+    >
       {/* Fondo difuminado */}
       <div
-        className="absolute inset-0 backdrop-blur-sm bg-black/25"
+        className={`absolute inset-0 backdrop-blur-sm transition-opacity duration-300 ${
+          isOpen ? "opacity-100" : "opacity-0"
+        }`}
         onClick={onClose}
       />
 
       {/* Card flotante */}
-      <div className="relative z-50 mt-20 w-[90%] max-w-sm">
-        {/* Puntero rombo en la parte superior izquierda */}
-        {/* <div className="absolute -top-3 left-10 h-6 w-6 rotate-45 bg-white/95 shadow-md" /> */}
-
+      <div
+        className={`relative z-50 mt-20 w-[90%] max-w-sm transition-all duration-300 ${
+          isOpen
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 -translate-y-4 scale-95"
+        }`}
+      >
         <div className="relative rounded-3xl bg-white/95 shadow-2xl px-5 pt-6 pb-4">
           {/* Header del popup: avatar + nombre + email */}
           <div className="flex items-center gap-4 mb-5">
@@ -120,14 +130,12 @@ export const Profile = () => {
 
   useEffect(() => {
     console.info(session)  
-  
-    
   }, [session])  
 
   return (
     <>
       {/* Avatar que abre el popup */}
-      <div onClick={() => setIsOpen(true)} className="h-8 w-8 cursor-pointer rounded-full shadow-lg bg-linear-to-br from-tertiary-1 to-primary-3 flex items-center justify-center text-white font-semibold text-sm">
+      <div onClick={() => setIsOpen(true)} className="h-8 w-8 cursor-pointer rounded-full shadow-sm bg-linear-to-br from-tertiary-1 to-primary-3 flex items-center justify-center text-white font-semibold text-sm">
         {userImg ? (
                 <Image
                   unoptimized
@@ -142,15 +150,14 @@ export const Profile = () => {
               )}
       </div>
 
-      {/* Popup de perfil con diseño tipo mock */}
-      {isOpen && (
-        <ProfilePopup
-          onClose={() => setIsOpen(false)}
-          userName={userName}
-          userEmail={userEmail}
-          userImg={userImg}
-        />
-      )}
+      {/* Popup de perfil — siempre montado, animado con CSS */}
+      <ProfilePopup
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        userName={userName}
+        userEmail={userEmail}
+        userImg={userImg}
+      />
     </>
   );
 };
