@@ -7,7 +7,7 @@ import { Header } from "@/components/common/Header";
 const DEFAULT_RADIUS_KM = 3;
 
 export function DashboardContent() {
-  // Radio aplicado (se usa para pedir estaciones)
+  // Radio aplicado (re-render)
   const [radiusKm, setRadiusKm] = useState<number>(DEFAULT_RADIUS_KM);
   // Radio en el slider (borrador mientras el usuario mueve el control)
   const [draftRadiusKm, setDraftRadiusKm] = useState<number>(DEFAULT_RADIUS_KM);

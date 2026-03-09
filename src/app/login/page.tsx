@@ -12,7 +12,8 @@ export default function LoginPage() {
     setIsAnimating(true)
     setTimeout(() => {
       setIsLogin(!isLogin)
-      setTimeout(() => setIsAnimating(false), 50)
+      // setTimeout(() => setIsAnimating(false), 50)
+      setIsAnimating(false)
     }, 200)
   }
 

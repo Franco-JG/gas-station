@@ -11,7 +11,16 @@ interface FilterSheetProps {
   defaultRadiusKm?: number;
 }
 
-export function FilterSheet({ isOpen, currentRadiusKm, minRadiusKm = 1, maxRadiusKm = 10, onClose, onApply, defaultRadiusKm = 3, onChangeRadiusKm }: FilterSheetProps) {
+export function FilterSheet({ 
+  isOpen, 
+  currentRadiusKm, 
+  minRadiusKm = 1, 
+  maxRadiusKm = 10, 
+  onClose, 
+  onApply, 
+  defaultRadiusKm = 3, 
+  onChangeRadiusKm 
+}: FilterSheetProps) {
   
   const handleApply = () => {
     onApply(currentRadiusKm);
@@ -29,7 +38,7 @@ export function FilterSheet({ isOpen, currentRadiusKm, minRadiusKm = 1, maxRadiu
     >
       {/* Fondo difuminado */}
       <div
-        className={`absolute inset-0 bg-tertiary-1/50 backdrop-blur-xs transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"
+        className={`absolute inset-0 backdrop-blur-sm transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"
           }`}
         onClick={onClose}
       />
@@ -43,10 +52,6 @@ export function FilterSheet({ isOpen, currentRadiusKm, minRadiusKm = 1, maxRadiu
           {/* Handle superior */}
           <div className="flex justify-center mb-4">
             <div className="w-16 h-1.5 rounded-full bg-gray-200" />
-          </div>
-          <div>
-            {/*TODO imprimir objeto con todos los props y su valor */}
-            <pre className="text-xs text-gray-500">{JSON.stringify({ isOpen, currentRadiusKm, minRadiusKm, maxRadiusKm, defaultRadiusKm }, null, 2)}</pre>  
           </div>
 
           {/* Título y limpiar */}
@@ -89,27 +94,15 @@ export function FilterSheet({ isOpen, currentRadiusKm, minRadiusKm = 1, maxRadiu
                 <span>{maxRadiusKm} km</span>
               </div>
             </div>
-            <div className="mt-2">
-              <input
-                type="range"
-                min={1}
-                max={20}
-                className="w-full accent-tertiary-1"
-              />
-              <div className="flex justify-between text-xs text-gray-400 mt-1">
-                <span>{minRadiusKm} km</span>
-                <span>{maxRadiusKm} km</span>
-              </div>
-            </div>
           </div>
 
           {/* Botón aplicar */}
           <button
             type="button"
             onClick={handleApply}
-            className="mt-8 w-full rounded-2xl bg-tertiary-1 py-3 text-center text-lg font-semibold text-white shadow-lg shadow-tertiary-1/40"
+            className="cursor-pointer mt-8 w-full rounded-2xl bg-tertiary-1 py-3 text-center text-lg font-semibold text-white shadow-lg shadow-tertiary-1/40"
           >
-            Aplicar Filtros
+            Aplicar Filtro
           </button>
         </div>
       </div>

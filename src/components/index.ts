@@ -1,6 +1,7 @@
 export { StationCard } from './station/StationCard'
 export { PermissionBanner } from './dashboard/PermissionBanner'
 export { StationSkeleton } from './common/StationSkeleton'
+export { Profile } from './common/Profile'
 // export { Header} from './common/Header'  
 
 // client components
