@@ -27,7 +27,6 @@ export const stationService = {
       FROM stations
       WHERE ST_DWithin(location, ST_MakePoint(${lng}, ${lat})::geography, ${radiusMeters})
       ORDER BY distance ASC
-      LIMIT 100;
     `
 
     if (nearbyIds.length === 0) return []

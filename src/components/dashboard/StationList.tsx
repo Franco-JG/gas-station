@@ -28,7 +28,7 @@ export const StationList = ({ radiusKm }: StationListProps) => {
       });
       setStations(data);
       setLoading(false);
-      console.log("Estaciones: "+data.length)
+      console.log("Estaciones: " + data.length)
     };
 
     fetchStations(radiusKm);
@@ -38,6 +38,10 @@ export const StationList = ({ radiusKm }: StationListProps) => {
   if (geoLoading || loading) {
     return (
       <div className="p-4 space-y-4">
+        <div className='space-y-2'>
+          <div className="w-6/12 h-5 rounded animate-shimmer"></div>
+          <div className='h-3 w-9/12 rounded animate-shimmer'></div>
+        </div>
         {[...Array(3)].map((_, i) => (
           <StationSkeleton key={i} />
         ))}
@@ -47,7 +51,7 @@ export const StationList = ({ radiusKm }: StationListProps) => {
 
   // Error de permisos
   if (geoError) {
-    return <PermissionBanner onRetry={requestLocation}/>;
+    return <PermissionBanner onRetry={requestLocation} />;
   }
 
   // Sin estaciones
@@ -61,6 +65,12 @@ export const StationList = ({ radiusKm }: StationListProps) => {
 
   return (
     <div className="p-4 space-y-4">
+      <div>
+        <h2 className="text-lg font-bold text-tertiary-1">Gasolineras Cercanas</h2>
+        <p className="text-xs text-tertiary-3">
+          Se encontraron <strong>{stations.length}</strong> gasolineras en un radio de <strong>{radiusKm} km</strong>.
+        </p>
+      </div>
       {stations.map((station) => (
         <StationCard key={station.id} {...station} />
       ))}
