@@ -128,10 +128,6 @@ export const Profile = () => {
 
   const [isOpen, setIsOpen] = useState(false);
 
-  useEffect(() => {
-    console.info(session)  
-  }, [session])  
-
   return (
     <>
       {/* Avatar que abre el popup */}
