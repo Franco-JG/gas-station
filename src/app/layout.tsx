@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sileo"
+import { auth } from "@/lib/auth";
+import { SessionProvider } from "next-auth/react";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,12 +22,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
 
+  const session = await auth();
+
   return (
     <html lang="en">
       <body
         className={`${inter.className} antialiased `}
-      >
-        {children}
+      > 
+        <SessionProvider session={session}>
+          {children}
+        </SessionProvider>
         <Toaster
           position="top-center"
           options={{

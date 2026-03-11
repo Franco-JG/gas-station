@@ -12,7 +12,8 @@ export default function LoginPage() {
     setIsAnimating(true)
     setTimeout(() => {
       setIsLogin(!isLogin)
-      setTimeout(() => setIsAnimating(false), 50)
+      // setTimeout(() => setIsAnimating(false), 50)
+      setIsAnimating(false)
     }, 200)
   }
 
@@ -34,9 +35,9 @@ export default function LoginPage() {
             }`}
           >
             {isLogin ? (
-              <LoginView onToggle={handleToggle} />
+              <LoginView key="login" onToggle={handleToggle} />
             ) : (
-              <SignUpView onToggle={handleToggle} />
+              <SignUpView key="signup" onToggle={handleToggle} />
             )}
           </div>
         </div>

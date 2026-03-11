@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
@@ -21,10 +21,11 @@ export const LoginView = ({ onToggle }: Props) => {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError("")
     setLoading(true)
+    let errorMessage = ""
     try {
       const result = await signIn("credentials", {
         email,
@@ -33,19 +34,21 @@ export const LoginView = ({ onToggle }: Props) => {
       })
 
       if (result?.error) {
-        setError("Credenciales inválidas")
-        sileo.error({
-          title: "Error",
-          description: error
-        })
+        errorMessage = ("Credenciales inválidas")
       }else{
         router.push("/")
         // router.refresh()
       }
     } catch (error) {
-      setError("Error al iniciar sesión: " + error)
+      console.error("Error al iniciar sesión:", error)
     } finally {
       setLoading(false)
+      if (errorMessage) {
+        sileo.error({
+          title: "Error",
+          description: errorMessage
+        })
+      }
     }
   }
 
@@ -68,11 +71,6 @@ export const LoginView = ({ onToggle }: Props) => {
 
       {/* Form */}
       <form className="space-y-4" onSubmit={handleSubmit}>
-        {/* {error && (
-          <div className="bg-secondary-6 border border-secondary-3 text-secondary-1 px-4 py-2 rounded-lg text-sm">
-            {error}
-          </div>
-        )} */}
 
         {/* Email Input */}
         <div className="space-y-1.5">

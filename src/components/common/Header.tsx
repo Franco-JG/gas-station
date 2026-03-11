@@ -1,35 +1,24 @@
-import Image from "next/image";
-import { auth, signOut } from "@/auth";
-import { LuSettings } from "react-icons/lu"
+import { LuSettings2 } from "react-icons/lu";
+import { Profile } from "@/components"
 
-export async function Header() {
+interface HeaderProps {
+  onOpenFilters?: () => void;
+  onOpenProfile?: () => void;
+}
 
-  const session = await auth();
-
-  const userName = session?.user?.name || "User"
-  const userImg = session?.user?.image
+export function Header({ onOpenFilters }: HeaderProps) {
 
   return (
     <header className="border-b border-b-primary-6 bg-white p-4 sticky inset-0 z-10 flex justify-between items-center">
-      {userImg ? (<Image
-        unoptimized
-        src={userImg}
-        alt={userName+" avatar"}
-        width={30}
-        height={30}
-        className="rounded-full"
-      />) : (<div className="w-8 h-8 bg-gray-100 rounded-full border border-gray-200">
-      </div>)}
+      <Profile/>
       <h1 className="text-xl font-bold text-primary-1">
         <span className="text-title">Gas</span>México
       </h1>
-      <LuSettings
-        onClick={async () => {
-          "use server"
-          await signOut()
-        }}
+      <LuSettings2
+        onClick={onOpenFilters}
         size={30}
         className="text-tertiary-1 cursor-pointer" />
     </header>
   )
+
 }

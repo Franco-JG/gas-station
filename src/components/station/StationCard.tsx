@@ -3,8 +3,14 @@ import { FaLocationArrow } from "react-icons/fa"
 import { StationWithDistance } from '@/types'
 import { FavoriteButton } from './FavoriteButton';
 
-
 export const StationCard = ({ name, prices, distance, lat, lng, id, isFavorited }: StationWithDistance) => {
+
+  const formatDistance = (meters: number) => {
+    if (meters < 1000) {
+      return `${Math.round(meters)} m`;
+    }
+    return `${(meters / 1000).toFixed(1)} km`;
+  };
 
   const routeUrl = "https://www.google.com/maps/dir/?api=1&destination="
 
@@ -36,7 +42,7 @@ export const StationCard = ({ name, prices, distance, lat, lng, id, isFavorited 
             {distance && (
               <div className="flex items-center gap-1">
                 <FaLocationArrow className="text-subtitle w-2.5" />
-                <span className="text-subtitle text-xs">a {(distance / 1000).toFixed(1)} km</span>
+                <span className="text-subtitle text-xs">a {formatDistance(distance)}</span>
               </div>
             )
             }
@@ -79,7 +85,7 @@ export const StationCard = ({ name, prices, distance, lat, lng, id, isFavorited 
           </span>
         </button>
         {/* toggle component */}
-        <FavoriteButton stationId={id} initialIsFavorited={isFavorited} />
+        <FavoriteButton stationId={id} initialFavorited={isFavorited} />
       </div>
     </div>
   )

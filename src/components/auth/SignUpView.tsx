@@ -3,10 +3,11 @@
 import { useState } from "react"
 import { signIn } from "next-auth/react"
 import { LuMail, LuLock, LuEye, LuEyeOff, LuUser } from "react-icons/lu"
-import { registerUser } from "./actions/actions"
+// import { registerUser } from "./actions/actions"
 import { FaGasPump } from "react-icons/fa"
 import { sileo } from "sileo"
 import { useRouter } from "next/navigation"
+import { registerUser } from "@/actions"
 
 interface Props {
   onToggle: () => void
@@ -47,7 +48,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       return
     }
 
-    const result = await registerUser(email, password, name)
+    const result = await registerUser({email, password, name})
 
     if (!result.success) {
       errorMessage = result.error || "Error al crear la cuenta"
