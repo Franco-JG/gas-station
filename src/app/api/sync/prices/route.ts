@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { seedFullSync } from "@/services/cre-sync.service";
+import { syncPricesOnly } from "@/services/cre-sync.service";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -10,21 +10,18 @@ export async function GET(request: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { searchParams } = new URL(request.url);
-  const limit = parseInt(searchParams.get("limit") || "0");
-
   try {
-    const stats = await seedFullSync(limit);
+    const stats = await syncPricesOnly();
 
     return NextResponse.json({
       success: true,
-      message: `Seed completo en ${stats.duration}s`,
+      message: `Precios actualizados en ${stats.duration}s`,
       stats,
     });
   } catch (error) {
-    console.error("❌ Error en seed:", error);
+    console.error("❌ Error en sync precios:", error);
     return NextResponse.json(
-      { error: "Fallo en seed completo" },
+      { error: "Fallo en sync de precios" },
       { status: 500 }
     );
   }
